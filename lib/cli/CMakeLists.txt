@@ -30,6 +30,7 @@ set(cli_SOURCES
   featureenablecommand.cpp featureenablecommand.hpp
   featurelistcommand.cpp featurelistcommand.hpp
   featureutility.cpp featureutility.hpp
+  internalkillcommand.cpp internalkillcommand.hpp
   nodesetupcommand.cpp nodesetupcommand.hpp
   nodeutility.cpp nodeutility.hpp
   nodewizardcommand.cpp nodewizardcommand.hpp
