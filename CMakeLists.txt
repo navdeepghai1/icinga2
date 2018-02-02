@@ -406,6 +406,33 @@ if(WIN32)
 
   install(FILES ${CMAKE_CURRENT_BINARY_DIR}/NSCP.msi DESTINATION ${CMAKE_INSTALL_SBINDIR})
 
+  set(ITL_VERSION "18303d320c718fe2eb61a7ceeb1590552623bc9d")
+  set(ITL_URL "https://github.com/Icinga/icinga-template-library/archive/${ITL_VERSION}.tar.gz")
+  set(ITL_ARCHIVE "${CMAKE_CURRENT_BINARY_DIR}/icinga-template-library-${ITL_VERSION}.tar.gz")
+  set(ITL_PATH ${CMAKE_BINARY_DIR}/icinga-template-library-${ITL_VERSION})
+
+  if (NOT EXISTS ${ITL_ARCHIVE})
+    file(DOWNLOAD ${ITL_URL} ${ITL_ARCHIVE} SHOW_PROGRESS)
+	if (EXISTS ${ITL_PATH})
+		file(REMOVE_RECURSE ${ITL_PATH})
+	endif()
+  endif()
+
+  if (NOT EXISTS ${ITL_PATH})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xvf ${ITL_ARCHIVE})
+  endif()
+
+  file(GLOB_RECURSE ITL_FILES "${ITL_PATH}/itl/*")
+  file(GLOB_RECURSE ITL_DOC_FILES "${ITL_PATH}/itl/*")
+  install(
+    FILES ${ITL_FILES}
+	DESTINATION "${CMAKE_INSTALL_DATADIR}/icinga2/include"
+  )
+  install(
+    FILES ${ITL_DOC_FILES}
+	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/doc/icinga2/markdown"
+  )
+
   if (OPENSSL_VERSION_MINOR GREATER_EQUAL 1)
     if (CMAKE_VS_PLATFORM_NAME STREQUAL "x64")
       list (APPEND ICINGA2_OPENSSL_DLLS ${OPENSSL_INCLUDE_DIR}/../bin/libcrypto-1_1-x64.dll ${OPENSSL_INCLUDE_DIR}/../bin/libssl-1_1-x64.dll)
